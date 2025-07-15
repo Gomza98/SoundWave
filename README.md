@@ -39,7 +39,7 @@ To change artists, scroll to the bottom of the HTML file and edit the const arti
 
 Change Contact Email/WhatsApp (Optional)
 
-Replace the email (l.mmakola3@gmail.com) and WhatsApp number (084 441 4181) in the HTML and JS sections with your own.
+Replace the email ("") and WhatsApp number ("") in the HTML and JS sections with your own.
 
 ✨ How It Works
 Artist Discovery:
