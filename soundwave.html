@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundWave - SA Artist Booking Platform</title>
+    <meta name="description" content="Book amazing South African artists for your events. Musicians, DJs, bands and performers for weddings, parties, and corporate events.">
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/lucide-static@0.293.0/icons/music-3.svg" type="image/svg+xml">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.3s ease-out forwards;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-text {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #00ccff, #7c3aed, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+            position: relative;
+            padding: 0.25rem 0;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #00ccff, #7c3aed, #ec4899);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 7rem 1.5rem;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff00cc, #333399, #00ccff);
+            background-size: 600% 600%;
+            animation: gradientBackground 15s ease infinite;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23000000' fill-opacity='0.1' d='M0,160L48,138.7C96,117,192,75,288,64C384,53,480,75,576,101.3C672,128,768,160,864,149.3C960,139,1056,85,1152,69.3C1248,53,1344,75,1392,85.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") bottom no-repeat;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 8vw, 5.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: -1.5px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #00ccff, #7c3aed, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            color: white;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #6d28d9, #db2777);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.5rem;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Sections */
+        .section {
+            padding: 6rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 4rem;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #00ccff, #7c3aed, #ec4899);
+            border-radius: 2px;
+        }
+
+        /* Artist Grid */
+        .artist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .artist-card {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .artist-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 0.75rem 0.75rem 0 0;
+            transition: transform 0.5s ease;
+        }
+
+        .artist-card:hover .artist-image {
+            transform: scale(1.05);
+        }
+
+        .artist-info {
+            padding: 1.75rem;
+        }
+
+        .artist-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .artist-genre {
+            background: rgba(124, 58, 237, 0.8);
+            padding: 0.25rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .artist-description {
+            color: #d1d5db;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .star {
+            width: 1.2rem;
+            height: 1.2rem;
+            fill: #fbbf24;
+        }
+
+        .price {
+            color: #a855f7;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        /* Search and Filter */
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .search-input, .filter-select {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.75rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #ec4899;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            color: #d1d5db;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #7c3aed;
+            outline: none;
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: white;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-whatsapp:hover {
+            background: #22c55e;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2.5rem;
+            margin: 4rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #00ccff, #7c3aed, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #d1d5db;
+            font-size: 1.125rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(to right, #00ccff, #7c3aed);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: #7c3aed;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background: #7c3aed;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            color: #9ca3af;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            grid-column: 1 / -1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                font-size: 1.25rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-filter {
+                flex-direction: column;
+                border-radius: 1rem;
+                padding: 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+            max-width: 350px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                gap: 1.5rem;
+                position: absolute;
+                background: rgba(0,0,0,0.95);
+                top: 100%;
+                left: 0;
+                width: 100%;
+                z-index: 100;
+                padding: 2rem 0;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-toggle {
+                display: block;
+            }
+        }
+        /* Add focus styles for accessibility */
+        .btn:focus, .form-input:focus, .form-select:focus, .form-textarea:focus, .close-btn:focus {
+            outline: 2px solid #a855f7;
+            outline-offset: 2px;
+        }
+        
+        /* Wave divider */
+        .wave-divider {
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+        }
+
+        .wave-divider svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 100px;
+        }
+
+        .wave-divider .shape-fill {
+            fill: #0f172a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+                <span class="logo-text">SoundWave</span>
+            </div>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Open menu">&#9776;</button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#artists">Artists</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" onclick="openBookingModal()">Book Now</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content animate-fade-in">
+            <h1>
+                FEEL THE <span class="gradient-text">SOUNDWAVE</span>
+            </h1>
+            <p>
+                Book South Africa's most electrifying artists for an unforgettable experience. 
+                From chart-topping DJs to legendary performers.
+            </p>
+            <div class="btn-group">
+                <a href="#artists" class="btn btn-primary animate-pulse">Browse Artists</a>
+                <button class="btn btn-outline" onclick="openBookingModal()">Book Now</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="section" style="background: rgba(0, 0, 0, 0.3); margin: 0; max-width: 100%; padding: 4rem 1.5rem;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div class="stats">
+                <div class="stat-card glass-card">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Top Artists</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-number">3,000+</div>
+                    <div class="stat-label">Events Hosted</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Client Satisfaction</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-number">9 Provinces</div>
+                    <div class="stat-label">Nationwide Coverage</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Artists -->
+    <section class="section">
+        <h2 class="section-title">Featured Artists</h2>
+        <div class="artist-grid" id="featured-artists"></div>
+    </section>
+    
+    <!-- Wave divider -->
+    <div class="wave-divider">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+        </svg>
+    </div>
+    
+    <!-- All Artists -->
+    <section id="artists" class="section" style="background: #0f172a; margin: 0; max-width: 100%; padding: 6rem 1.5rem;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h2 class="section-title">Discover Artists</h2>
+            <div class="search-filter">
+                <input type="text" class="search-input" id="search-input" placeholder="Search artists or genres...">
+                <select class="filter-select" id="genre-filter">
+                    <option value="all">All Genres</option>
+                    <option value="afro-pop">Afro Pop</option>
+                    <option value="amapiano">Amapiano</option>
+                    <option value="house">House</option>
+                    <option value="kwaito">Kwaito</option>
+                    <option value="gospel">Gospel</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="hip-hop">Hip-Hop</option>
+                    <option value="traditional">Traditional</option>
+                </select>
+            </div>
+            <div class="artist-grid" id="all-artists"></div>
+            <div id="no-results" class="hidden" style="text-align: center; padding: 3rem; color: #9ca3af;">
+                <p style="font-size: 1.25rem;">No artists found matching your search.</p>
+                <button class="btn btn-outline" style="margin-top: 1rem;" onclick="openBookingModal()">Request Custom Booking</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="section" style="background: rgba(0, 0, 0, 0.3); margin: 0; max-width: 100%; padding: 6rem 1.5rem;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 class="section-title">About SoundWave</h2>
+            <p style="font-size: 1.25rem; color: #d1d5db; margin-bottom: 2rem; line-height: 1.7;">
+                SoundWave connects you to South Africa's vibrant music scene. Our curated roster features everything from Amapiano DJs to legendary jazz acts, making every event unforgettable. We're dedicated to showcasing the rich diversity of South African talent while providing seamless booking experiences.
+            </p>
+            <div class="glass-card" style="padding: 2rem; margin-top: 2rem;">
+                <h3 style="margin-bottom: 1.5rem;">Why Choose SoundWave?</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; text-align: left;">
+                    <div>
+                        <h4 style="color: #7c3aed; margin-bottom: 0.5rem;">Verified Talent</h4>
+                        <p>All artists are vetted for quality and professionalism</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #7c3aed; margin-bottom: 0.5rem;">Secure Payments</h4>
+                        <p>Safe, reliable payment processing for peace of mind</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #7c3aed; margin-bottom: 0.5rem;">24/7 Support</h4>
+                        <p>Our team is always ready to assist you</p>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" style="margin-top: 3rem;" onclick="openBookingModal()">Start Your Booking</button>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="glass-card" style="padding: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div>
+                    <h3 style="margin-bottom: 1.5rem; color: #7c3aed;">Contact Info</h3>
+                    <div style="color: white; margin-bottom: 2rem;">
+                        <div style="margin-bottom: 1.5rem;">
+                            <div style="font-weight: 600; margin-bottom: 0.25rem;">Email:</div>
+                            <div>l.mmakola3@gmail.com</div>
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <div style="font-weight: 600; margin-bottom: 0.25rem;">Phone:</div>
+                            <div>084 441 4181</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 0.25rem;">WhatsApp:</div>
+                            <div>084 441 4181</div>
+                        </div>
+                    </div>
+                    <h3 style="margin-bottom: 1.5rem; color: #7c3aed;">Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-icon">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 1.5rem; color: #7c3aed;">Send a Message</h3>
+                    <form id="contact-form" style="display: grid; gap: 1.5rem;">
+                        <div class="form-group">
+                            <input type="text" class="form-input" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-input" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-textarea" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <div class="logo" style="margin-bottom: 1.5rem;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                    <span class="logo-text">SoundWave</span>
+                </div>
+                <p style="color: #d1d5db; line-height: 1.7; margin-bottom: 1.5rem;">
+                    Connecting South Africa's best musical talent with unforgettable events across the nation.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-icon">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#artists">Artists</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#" onclick="openBookingModal()">Book an Artist</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Genres</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Amapiano</a></li>
+                    <li><a href="#">Afro Pop</a></li>
+                    <li><a href="#">House Music</a></li>
+                    <li><a href="#">Gospel</a></li>
+                    <li><a href="#">Traditional</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p style="color: #d1d5db; margin-bottom: 1.5rem;">
+                    Subscribe to get updates on new artists and special offers
+                </p>
+                <form style="display: flex; gap: 0.5rem;">
+                    <input type="email" class="form-input" placeholder="Your email" style="flex: 1;">
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">Subscribe</button>
+                </form>
+            </div>
+            <div class="copyright">
+                <p>© 2025 SoundWave. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content animate-scale-in">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Book an Artist</h2>
+                <button class="close-btn" onclick="closeBookingModal()" aria-label="Close booking modal">&times;</button>
+            </div>
+            <div id="selected-artist-info" class="hidden" style="background: rgba(124, 58, 237, 0.2); border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1.5rem; border: 1px solid rgba(124, 58, 237, 0.3);">
+                <h3 id="selected-artist-name" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;"></h3>
+                <p id="selected-artist-genre" style="color: #a855f7; margin-bottom: 0.25rem;"></p>
+                <p id="selected-artist-price" style="color: #a855f7;"></p>
+            </div>
+            <form id="booking-form" autocomplete="off">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="client-name">Full Name *</label>
+                        <input type="text" name="client_name" id="client-name" class="form-input" required placeholder="Your full name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="client-email">Email *</label>
+                        <input type="email" name="client_email" id="client-email" class="form-input" required placeholder="your@email.com">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="client-phone">Phone Number</label>
+                        <input type="tel" name="client_phone" id="client-phone" class="form-input" placeholder="084 441 4181">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="event-type">Event Type *</label>
+                        <select name="event_type" id="event-type" class="form-select" required>
+                            <option value="">Select event type</option>
+                            <option value="wedding">Wedding</option>
+                            <option value="corporate">Corporate Event</option>
+                            <option value="birthday">Birthday Party</option>
+                            <option value="festival">Festival</option>
+                            <option value="club">Club/Bar</option>
+                            <option value="private">Private Party</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="event-date">Event Date *</label>
+                        <input type="date" name="event_date" id="event-date" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="guest-count">Expected Guests</label>
+                        <select name="guest_count" id="guest-count" class="form-select">
+                            <option value="">Number of guests</option>
+                            <option value="1-50">1-50 guests</option>
+                            <option value="51-100">51-100 guests</option>
+                            <option value="101-200">101-200 guests</option>
+                            <option value="201-500">201-500 guests</option>
+                            <option value="500+">500+ guests</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="event-location">Event Location *</label>
+                    <input type="text" name="event_location" id="event-location" class="form-input" required placeholder="City, Province or Full Address">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="budget">Budget Range</label>
+                    <select name="budget" id="budget" class="form-select">
+                        <option value="">Select budget range</option>
+                        <option value="under-5000">Under R5,000</option>
+                        <option value="5000-15000">R5,000 - R15,000</option>
+                        <option value="15000-30000">R15,000 - R30,000</option>
+                        <option value="30000-60000">R30,000 - R60,000</option>
+                        <option value="60000+">R60,000+</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="message">Additional Details</label>
+                    <textarea name="message" id="message" class="form-textarea" placeholder="Tell us more about your event, music preferences, special requests, etc."></textarea>
+                </div>
+                <input type="hidden" name="artist_name" id="form-artist-name">
+                <input type="hidden" name="artist_genre" id="form-artist-genre">
+                <input type="hidden" name="artist_price" id="form-artist-price">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" id="form-submit-btn">
+                        Send Booking Request
+                    </button>
+                    <button type="button" class="btn btn-whatsapp" onclick="sendWhatsAppBooking()">
+                        Book via WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // South African Artists Data
+        const artists = [
+            {
+                id: 1,
+                name: "AmaPiano Queens",
+                genre: "Amapiano",
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop",
+                description: "Chart-topping DJ duo bringing the best of Amapiano for unforgettable parties and events.",
+                rating: 5,
+                price: "From R15,000",
+                location: "Johannesburg, Gauteng"
+            },
+            {
+                id: 2,
+                name: "Zola Groove Ensemble",
+                genre: "Kwaito",
+                image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=2070&auto=format&fit=crop",
+                description: "Classic Kwaito group, guaranteed to get the crowd moving. SA party legends.",
+                rating: 4,
+                price: "From R10,000",
+                location: "Soweto, Gauteng"
+            },
+            {
+                id: 3,
+                name: "Ms. Thando Jazz",
+                genre: "Jazz",
+                image: "https://images.unsplash.com/photo-1517232115160-ff93364542dd?q=80&w=1974&auto=format&fit=crop",
+                description: "Soulful jazz vocalist with an authentic South African twist. Ideal for galas & dinners.",
+                rating: 5,
+                price: "From R12,000",
+                location: "Cape Town, Western Cape"
+            },
+            {
+                id: 4,
+                name: "Khaya Gospel Choir",
+                genre: "Gospel",
+                image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=2070&auto=format&fit=crop",
+                description: "Powerful voices and harmonies. Uplifting gospel for all occasions.",
+                rating: 4,
+                price: "From R8,000",
+                location: "Durban, KZN"
+            },
+            {
+                id: 5,
+                name: "Xhosa Heritage Band",
+                genre: "Traditional",
+                image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop",
+                description: "Traditional Xhosa music and dance. Cultural authenticity for your event.",
+                rating: 5,
+                price: "From R10,000",
+                location: "Eastern Cape"
+            },
+            {
+                id: 6,
+                name: "Tshepo House Master",
+                genre: "House",
+                image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop",
+                description: "High-energy house DJ, resident at top SA clubs. Dance the night away.",
+                rating: 4,
+                price: "From R9,000",
+                location: "Pretoria, Gauteng"
+            },
+            {
+                id: 7,
+                name: "Afro Pop Stars",
+                genre: "Afro Pop",
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop",
+                description: "Young, dynamic band fusing Afro beats with pop for all ages.",
+                rating: 5,
+                price: "From R11,000",
+                location: "Bloemfontein, Free State"
+            },
+            {
+                id: 8,
+                name: "Ivyson",
+                genre: "Hip-Hop",
+                image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop",
+                description: "Award-winning hip-hop artist and energetic MC for modern events.",
+                rating: 5,
+                price: "From R30,000",
+                location: "Johannesburg, Gauteng"
+            }
+        ];
+        let selectedArtist = null;
+
+        // Generate star rating
+        function generateStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += `<svg class="star" viewBox="0 0 24 24" ${i <= rating ? 'fill="currentColor"' : 'fill="none" stroke="currentColor"'} style="vertical-align: middle;">
+                    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                </svg>`;
+            }
+            return stars;
+        }
+
+        // Artist Card
+        function createArtistCard(artist, showBookButton = true) {
+            return `
+                <div class="glass-card artist-card" data-genre="${artist.genre.toLowerCase().replace(/[^a-z0-9]/g, '-')}">
+                    <img src="${artist.image}" alt="${artist.name}" class="artist-image">
+                    <div class="artist-info">
+                        <h3 class="artist-name">${artist.name}</h3>
+                        <span class="artist-genre">${artist.genre}</span>
+                        <p class="artist-description">${artist.description}</p>
+                        <div class="rating">
+                            ${generateStars(artist.rating)}
+                            <span style="margin-left: 0.5rem; color: white; font-size: 0.875rem;">(${artist.rating})</span>
+                        </div>
+                        <div class="price">${artist.price}</div>
+                        ${showBookButton ? `<button class="btn btn-primary" style="width: 100%;" onclick="openBookingModal(${artist.id})">Book Artist</button>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Featured artists (top 3 by rating)
+        function populateFeaturedArtists() {
+            const featuredContainer = document.getElementById('featured-artists');
+            const featuredArtists = artists
+                .slice()
+                .sort((a, b) => b.rating - a.rating)
+                .slice(0, 3);
+            featuredContainer.innerHTML = featuredArtists.map(artist => createArtistCard(artist)).join('');
+        }
+        function populateAllArtists() {
+            const allContainer = document.getElementById('all-artists');
+            allContainer.innerHTML = artists.map(artist => createArtistCard(artist)).join('');
+        }
+
+        // Filtering logic
+        function filterArtists() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const selectedGenre = document.getElementById('genre-filter').value;
+            const artistCards = document.querySelectorAll('#all-artists .artist-card');
+            const noResults = document.getElementById('no-results');
+            let visibleCount = 0;
+            artistCards.forEach(card => {
+                const artistName = card.querySelector('.artist-name').textContent.toLowerCase();
+                const artistGenre = card.querySelector('.artist-genre').textContent.toLowerCase();
+                const cardGenre = card.dataset.genre;
+                const matchesSearch = artistName.includes(searchTerm) || artistGenre.includes(searchTerm);
+                const matchesGenre = selectedGenre === 'all' || cardGenre === selectedGenre.replace(/[^a-z0-9]/g, '-');
+                if (matchesSearch && matchesGenre) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            noResults.classList.toggle('hidden', visibleCount > 0);
+        }
+
+        // Modal logic
+        function openBookingModal(artistId = null) {
+            const modal = document.getElementById('booking-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const selectedArtistInfo = document.getElementById('selected-artist-info');
+            // Fill hidden artist fields for form
+            if (artistId) {
+                selectedArtist = artists.find(artist => artist.id === artistId);
+                modalTitle.textContent = `Book ${selectedArtist.name}`;
+                document.getElementById('selected-artist-name').textContent = selectedArtist.name;
+                document.getElementById('selected-artist-genre').textContent = `Genre: ${selectedArtist.genre}`;
+                document.getElementById('selected-artist-price').textContent = `Starting at: ${selectedArtist.price}`;
+                document.getElementById('form-artist-name').value = selectedArtist.name;
+                document.getElementById('form-artist-genre').value = selectedArtist.genre;
+                document.getElementById('form-artist-price').value = selectedArtist.price;
+                selectedArtistInfo.classList.remove('hidden');
+            } else {
+                selectedArtist = null;
+                modalTitle.textContent = 'Book an Artist';
+                document.getElementById('form-artist-name').value = '';
+                document.getElementById('form-artist-genre').value = '';
+                document.getElementById('form-artist-price').value = '';
+                selectedArtistInfo.classList.add('hidden');
+            }
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeBookingModal() {
+            const modal = document.getElementById('booking-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('booking-form').reset();
+        }
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div style="font-weight: 600; margin-bottom: 0.25rem;">${type === 'success' ? 'Success!' : 'Error!'}</div>
+                <div style="font-size: 0.875rem; color: #d1d5db;">${message}</div>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 4000);
+        }
+
+        // WhatsApp message
+        function generateWhatsAppMessage() {
+            const eventDate = document.getElementById('event-date').value;
+            const eventDateStr = eventDate ? new Date(eventDate).toLocaleDateString('en-ZA', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) : "TBD";
+            return encodeURIComponent(`
+🎵 *SoundWave Booking Request* 🎵
+
+${selectedArtist ? `Artist: ${selectedArtist.name} (${selectedArtist.genre})` : "General Booking Inquiry"}
+
+*Client Details:*
+Name: ${document.getElementById('client-name').value}
+Email: ${document.getElementById('client-email').value}
+Phone: ${document.getElementById('client-phone').value}
+
+*Event Details:*
+Type: ${document.getElementById('event-type').value}
+Date: ${eventDateStr}
+Location: ${document.getElementById('event-location').value}
+Guest Count: ${document.getElementById('guest-count').value}
+Budget: ${document.getElementById('budget').value}
+
+*Message:*
+${document.getElementById('message').value}
+
+Please confirm availability and next steps. Thank you!
+            `.trim());
+        }
+        function sendWhatsAppBooking() {
+            const requiredFields = ['client-name', 'client-email', 'event-type', 'event-date', 'event-location'];
+            const missingFields = requiredFields.filter(field => !document.getElementById(field).value);
+            if (missingFields.length > 0) {
+                showToast('Please fill in all required fields before sending WhatsApp message.', 'error');
+                return;
+            }
+            const message = generateWhatsAppMessage();
+            const whatsappUrl = `https://wa.me/27844414181?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // "mailto:" free booking email
+        function sendMailtoBooking() {
+            const name = document.getElementById('client-name').value;
+            const email = document.getElementById('client-email').value;
+            const phone = document.getElementById('client-phone').value;
+            const eventType = document.getElementById('event-type').value;
+            const eventDate = document.getElementById('event-date').value;
+            const guestCount = document.getElementById('guest-count').value;
+            const eventLocation = document.getElementById('event-location').value;
+            const budget = document.getElementById('budget').value;
+            const message = document.getElementById('message').value;
+            const artist = selectedArtist ? selectedArtist.name + " (" + selectedArtist.genre + ")" : "No artist selected";
+
+            if (!name || !email || !eventType || !eventDate || !eventLocation) {
+                showToast("Please fill in all required fields.", "error");
+                return;
+            }
+
+            const body = encodeURIComponent(
+                `Artist: ${artist}\n\n` +
+                `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n` +
+                `Event Type: ${eventType}\nEvent Date: ${eventDate}\nLocation: ${eventLocation}\nGuests: ${guestCount}\nBudget: ${budget}\n\n` +
+                `Additional Details:\n${message}`
+            );
+            const mailto = `mailto:l.mmakola3@gmail.com?subject=SoundWave Booking Request&body=${body}`;
+            window.location.href = mailto;
+
+            // Optional: show a toast and close modal for UX
+            showToast("Booking email opened in your email app!", "success");
+            closeBookingModal();
+        }
+
+        // Hook up the events
+        document.getElementById('search-input').addEventListener('input', filterArtists);
+        document.getElementById('genre-filter').addEventListener('change', filterArtists);
+
+        // Modal outside click close
+        document.getElementById('booking-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeBookingModal();
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Close nav on mobile
+                const navLinks = document.getElementById('nav-links');
+                if (navLinks) navLinks.classList.remove('active');
+            });
+        });
+
+        // Set minimum date
+        document.getElementById('event-date').min = new Date().toISOString().split('T')[0];
+
+        // NAV: Hamburger for mobile
+        const navToggle = document.getElementById('nav-toggle');
+        if (navToggle) {
+            navToggle.addEventListener('click', function () {
+                document.getElementById('nav-links').classList.toggle('active');
+            });
+        }
+
+        // Replace the submit handler for your booking form
+        document.getElementById('booking-form').onsubmit = function(e) {
+            e.preventDefault();
+            sendMailtoBooking();
+        };
+
+        // Contact form handler
+        document.getElementById('contact-form').onsubmit = function(e) {
+            e.preventDefault();
+            showToast("Your message has been sent successfully!", "success");
+            this.reset();
+        };
+
+        // INIT
+        document.addEventListener('DOMContentLoaded', function() {
+            populateFeaturedArtists();
+            populateAllArtists();
+        });
+    </script>
+</body>
+</html>
